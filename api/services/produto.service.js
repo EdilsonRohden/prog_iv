@@ -10,14 +10,16 @@ async function cadastrarProduto(produto) {
 }
 
 async function buscarProdutoPorCodigo(codigoProduto) {
-  // TODO consultar produto na lista e retornar
-
+  // Consulta a lista e caso exista retorna o produto
+  if (products.has(codigoProduto)) {
+    return products.get(codigoProduto)
+  }
   // TODO executar o comando abaixo, caso nenhum produto seja encontrado para o código informado
   throw new Error(`Nenhum produto encontrado com o código ${codigoProduto}`)
 }
 
 async function listarProdutos() {
-  return products.slice()
+  return products.values
 }
 
 function addProduct(product) {
