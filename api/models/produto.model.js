@@ -5,6 +5,14 @@ class Produto {
     this.departamento = data?.departamento
     this.preco = data?.preco
   }
+
+  isValid() {
+    for (const value in this) {
+      if (!this[value]) {
+        throw new Error(`Nenhum valor informado para o campo ${value}`)
+      }
+    }
+  }
 }
 
 module.exports = Produto
