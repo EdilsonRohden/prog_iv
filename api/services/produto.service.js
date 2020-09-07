@@ -1,8 +1,8 @@
 const products = new Map()
 
-async function cadastrarProduto(produto) {
+async function cadastrarProduto(product) {
   // TODO executar o comando abaixo, caso alguns dos campos(codigo, nome, departamento, preco) não foi informado
-  produto.isValid()
+  product.isValid()
 
   // TODO verificar se produto existe na lista e caso contrario inseri-lo
   // TODO executar o comando abaixo, caso já exista um produto para o código informado
@@ -19,12 +19,16 @@ async function buscarProdutoPorCodigo(codigoProduto) {
 }
 
 async function listarProdutos() {
-  return products.values
+  const values = []
+  products.forEach((value) => {
+    values.push(value)
+  })
+  return values
 }
 
 function addProduct(product) {
   if (products.get(product.codigo)) {
-    throw new Error(`Já existe um produto cadastrado com o código ${produto.codigo}`)
+    throw new Error(`Já existe um produto cadastrado com o código ${product.codigo}`)
   }
   products.set(product.codigo, product)
 }

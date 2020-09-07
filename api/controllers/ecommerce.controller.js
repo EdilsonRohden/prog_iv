@@ -1,7 +1,7 @@
-const Produto = require('../models/produto.model.js');
-const ItemCarrinho = require('../models/itemCarrinho.model.js');
-const ProdutoService = require('../services/produto.service.js');
-const CarrinhoService = require('../services/carrinho.service.js');
+const Produto = require('../models/produto.model.js')
+const ItemCarrinho = require('../models/itemCarrinho.model.js')
+const ProdutoService = require('../services/produto.service.js')
+const CarrinhoService = require('../services/carrinho.service.js')
 
 /**
  * @swagger
@@ -20,26 +20,26 @@ const CarrinhoService = require('../services/carrinho.service.js');
  *            nome:
  *              type: string
  *            departamento:
- *              type: string 
+ *              type: string
  *            preco:
  *              type: number
- *              format: double 
+ *              format: double
  *    responses:
  *      '201':
- *         description: Produto cadastrado com sucesso  
+ *         description: Produto cadastrado com sucesso
  *      '400':
  *         description: Bad Request
  */
 exports.criarProduto = (req, res) => {
-    let produto = new Produto(req.body);
-    ProdutoService.cadastrarProduto(produto)
+  let produto = new Produto(req.body)
+  ProdutoService.cadastrarProduto(produto)
     .then(() => {
-        res.status(201).json({ produto })
+      res.status(201).json({ produto })
     })
     .catch((err) => {
-        res.status(400).json({ message: err.message })
+      res.status(400).json({ message: err.message })
     })
-};
+}
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ exports.criarProduto = (req, res) => {
  *    description: API para listar os produdos cadastrados no e-commerce
  *    responses:
  *      '200':
- *         description: Produto cadastrado com sucesso  
+ *         description: Produto cadastrado com sucesso
  *         schema:
  *           type: array
  *           items:
@@ -58,23 +58,59 @@ exports.criarProduto = (req, res) => {
  *               nome:
  *                 type: string
  *               departamento:
- *                 type: string 
+ *                 type: string
  *               preco:
  *                 type: number
- *                 format: double 
+ *                 format: double
  *      '400':
  *         description: Bad Request
  */
 exports.listarProdutos = (req, res) => {
-    ProdutoService.listarProdutos()    
+  ProdutoService.listarProdutos()
     .then((data) => {
-        res.status(200).json({ data })
+      res.status(200).json({ data })
     })
     .catch((err) => {
-        res.status(400).json({ message: err.message })
+      res.status(400).json({ message: err.message })
     })
-};
-
+}
+/**
+ * @swagger
+ * /produto/{idProduto}:
+ *  get:
+ *    description: API para listar o produdo cadastrados no e-commerce
+ *    parameters:
+ *      - in: path
+ *        name: idProduto
+ *        type: string
+ *    responses:
+ *      '200':
+ *         description: Produto encontrado
+ *         schema:
+ *           type: object
+ *           items:
+ *             properties:
+ *               codigo:
+ *                 type: string
+ *               nome:
+ *                 type: string
+ *               departamento:
+ *                 type: string
+ *               preco:
+ *                 type: number
+ *                 format: double
+ *      '400':
+ *         description: Bad Request
+ */
+exports.listarProduto = (req, res) => {
+  ProdutoService.buscarProdutoPorCodigo(req.params.idProduto)
+    .then((data) => {
+      res.status(200).json({ data })
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
+    })
+}
 
 /**
  * @swagger
@@ -84,7 +120,7 @@ exports.listarProdutos = (req, res) => {
  *    parameters:
  *      - in: path
  *        name: idCarrinho
- *        type: string  
+ *        type: string
  *      - in: body
  *        name: itemCarrinho
  *        description: Item para ser adicionado no carrinho.
@@ -95,22 +131,24 @@ exports.listarProdutos = (req, res) => {
  *              type: string
  *            quantidade:
  *              type: integer
+ *            valor:
+ *              type: integer
  *    responses:
  *      '200':
- *         description: Item ou quantidade adicionado com sucesso  
+ *         description: Item ou quantidade adicionado com sucesso
  *      '400':
  *         description: Bad Request
  */
 exports.incluirItemCarrinho = (req, res) => {
-    let itemCarrinho = new ItemCarrinho(req.body);
-    CarrinhoService.incluirItemCarrinho(req.params.idCarrinho, itemCarrinho)
+  let itemCarrinho = new ItemCarrinho(req.body)
+  CarrinhoService.incluirItemCarrinho(req.params.idCarrinho, itemCarrinho)
     .then((data) => {
-        res.status(200).json({ data })
+      res.status(200).json({ data })
     })
     .catch((err) => {
-        res.status(400).json({ message: err.message })
+      res.status(400).json({ message: err.message })
     })
-};
+}
 
 /**
  * @swagger
@@ -120,7 +158,7 @@ exports.incluirItemCarrinho = (req, res) => {
  *    parameters:
  *      - in: path
  *        name: idCarrinho
- *        type: string  
+ *        type: string
  *      - in: body
  *        name: itemCarrinho
  *        description: Item para ser adicionado no carrinho.
@@ -131,22 +169,24 @@ exports.incluirItemCarrinho = (req, res) => {
  *              type: string
  *            quantidade:
  *              type: integer
+ *            valor:
+ *              type: integer
  *    responses:
  *      '200':
- *         description: Item ou quantidade removido com sucesso  
+ *         description: Item ou quantidade removido com sucesso
  *      '400':
  *         description: Bad Request
  */
 exports.removerItemCarrinho = (req, res) => {
-    let itemCarrinho = new ItemCarrinho(req.body);
-    CarrinhoService.removerItemCarrinho(req.params.idCarrinho, itemCarrinho)
+  let itemCarrinho = new ItemCarrinho(req.body)
+  CarrinhoService.removerItemCarrinho(req.params.idCarrinho, itemCarrinho)
     .then((data) => {
-        res.status(200).json({ data })
+      res.status(200).json({ data })
     })
     .catch((err) => {
-        res.status(400).json({ message: err.message })
+      res.status(400).json({ message: err.message })
     })
-};
+}
 
 /**
  * @swagger
@@ -155,10 +195,10 @@ exports.removerItemCarrinho = (req, res) => {
  *    description: Totalizar os itens do carrinho
  *    parameters:
  *      - name: idCarrinho
- *        type: string  
+ *        type: string
  *        in: path
  *      - name: formaPagamento
- *        type: string  
+ *        type: string
  *        in: path
  *        enum: [CARTAO, BOLETO]
  *    responses:
@@ -169,24 +209,24 @@ exports.removerItemCarrinho = (req, res) => {
  *           properties:
  *             valorBruto:
  *               type: number
- *               format: double 
+ *               format: double
  *             desconto:
  *               type: number
- *               format: double 
+ *               format: double
  *             valorLiquido:
  *               type: number
- *               format: double 
+ *               format: double
  *      '400':
  *         description: Bad Request
  *      '404':
  *         description: Nenhum carrinho encontrado para o id fornecido
  */
 exports.totalizarCarrinho = (req, res) => {
-    CarrinhoService.totalizarCarrinho(req.params.idCarrinho, req.params.formaPagamento)
+  CarrinhoService.totalizarCarrinho(req.params.idCarrinho, req.params.formaPagamento)
     .then((data) => {
-        res.status(200).json({ data })
+      res.status(200).json({ data })
     })
     .catch((err) => {
-        res.status(400).json({ message: err.message })
+      res.status(400).json({ message: err.message })
     })
-};
+}

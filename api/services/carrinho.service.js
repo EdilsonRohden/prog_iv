@@ -1,37 +1,42 @@
-const TotalCarrinho = require('../models/totalCarrinho.model.js');
+const Carrinho = require('../models/carrinho.model')
 
 const mapCarrinhos = new Map() // utilizem um map de (idCarrinho, List<ItemCarrinho>)
 
-async function incluirItemCarrinho(idCarrinho, itemCarrinho){
-    // TODO se carrinho nao existe, entao incluir novo carrinho no mapCarrinhos
-    // Se carrinho ja contem o intem, entao adicionar a quantidade
-    // caso contrario, inserir intem no carrinho
+async function incluirItemCarrinho(idCarrinho, itemCarrinho) {
+  itemCarrinho.isValid()
 
-    // caso nao tenha sido informado alguns dos campos, entao retornar a exececao abaixo
-    throw new Error(`Nenhum valor informado para o campo ...`)
+  verifyIdCarrinho(idCarrinho)
+
+  if (!mapCarrinhos.has(idCarrinho)) {
+    mapCarrinhos.set(idCarrinho, new Carrinho())
+  }
+
+  mapCarrinhos.get(idCarrinho).add(itemCarrinho)
+  return mapCarrinhos.get(idCarrinho)
 }
 
-async function removerItemCarrinho(idCarrinho, itemCarrinho){
-    // TODO se carrinho nao existe, entao retornar o erro abaixo
-    throw new Error(`Não existe nenhum carrinho com o id ${idCarrinho}`)
-
-
-    // Diminuir a quantidade informada da quantidade do item adicionada ao carrinho
-    // Caso a quantidade ficar zerada, entao remover item do carrinho
+async function removerItemCarrinho(idCarrinho, itemCarrinho) {
+  isThereACartWithId(idCarrinho)
+  mapCarrinhos.get(idCarrinho).remove(itemCarrinho)
+  return mapCarrinhos.get(idCarrinho)
 }
 
-async function totalizarCarrinho(idCarrinho, formaPagamento){
-    // TODO se carrinho nao existe, entao retornar o erro abaixo
-    throw new Error(`Não existe nenhum carrinho com o id ${idCarrinho}`)
-
-    // TODO Totalizar os itens do carrinho e aplicar desconto se forma de pagamento for Boleto
-    // retornar object TotalCarrinho
-
-    return new TotalCarrinho({
-        valorBruto: 110, 
-        desconto: 10,
-        valorLiquido: 99
-    })
+async function totalizarCarrinho(idCarrinho, formaPagamento) {
+  isThereACartWithId(idCarrinho)
+  return mapCarrinhos.get(idCarrinho).totalize(formaPagamento)
 }
 
-module.exports = {incluirItemCarrinho, removerItemCarrinho, totalizarCarrinho}
+function isThereACartWithId(idCarrinho) {
+  verifyIdCarrinho(idCarrinho)
+  if (!mapCarrinhos.has(idCarrinho)) {
+    throw new Error(`Não existe nenhum carrinho com id: ${idCarrinho}`)
+  }
+}
+
+function verifyIdCarrinho(idCarrinho) {
+  if (!idCarrinho) {
+    throw new Error('Id do carrinho não informado!')
+  }
+}
+
+module.exports = { incluirItemCarrinho, removerItemCarrinho, totalizarCarrinho }
